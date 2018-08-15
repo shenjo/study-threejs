@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>画网格</title>
+</head>
+<body>
+<script src="../../build/three.js"></script>
+<script>
+
+  function initRenderer() {
+    const renderer = new THREE.WebGLRenderer({antialias: true});
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+    renderer.setClearColor(0xFFFFFF, 1.0);
+    return renderer;
+  }
+
+  function initCamera() {
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
+    camera.position.x = 0;
+    camera.position.y = 10000;
+    camera.position.z = 0;
+    camera.up.x = 0;
+    camera.up.y = 0;
+    camera.up.z = 1;
+    camera.lookAt(0, 0, 0);
+    return camera;
+  }
+
+  function initScene() {
+    return new THREE.Scene();
+  }
+
+  function initLine(scene) {
+    const geometry = new THREE.Geometry();
+    geometry.vertices.push(new THREE.Vector3(-500, 0, 0));// 添加第一个点
+    geometry.vertices.push(new THREE.Vector3(500, 0, 0));// 添加第二个点
+
+    for (let i = 0; i < 20; i++) {
+      const line = new THREE.LineSegments(geometry, new THREE.LineBasicMaterial({color: 0x000000, opacity: 0.2}))
+      line.position.z = (i * 50) - 500;
+      scene.add(line);
+
+      const line2 = new THREE.Line(geometry, new THREE.LineBasicMaterial({color: 0x000000, opacity: 0.2}));
+      line2.position.x = (i * 50) - 500;
+      line2.rotation.y = 90 * Math.PI / 180;
+      scene.add(line2);
+    }
+  }
+
+  function initLight() {
+    const light = new THREE.DirectionalLight(0xFF0000, 1.0, 0);
+    light.position.set(100, 100, 200);
+    return light;
+  }
+
+  function draw() {
+    const renderer = initRenderer();
+    const camera = initCamera();
+    const scene = initScene();
+    scene.add(initLight());
+    initLine(scene)
+    renderer.clear();
+    renderer.render(scene, camera)
+  }
+
+  draw()
+</script>
+</body>
+</html>
