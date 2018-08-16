@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>相机不动，物体移动</title>
+    <style>
+        div#frame {
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            height: 600px;
+            background-color: #EEEEEE;
+        }
+    </style>
+</head>
+<body>
+<div id="frame"></div>
+
+
+<script src="../../../build/three.min.js"></script>
+<script>
+  function initRender(ele) {
+    const renderer = new THREE.WebGLRenderer({antialias: true})
+    const width = ele.clientWidth;
+    const height = ele.clientHeight;
+    renderer.setSize(width, height);
+    ele.appendChild(renderer.domElement);
+    renderer.setClearColor(0xffffff, 1.0);
+    return renderer;
+  }
+
+  function initCamera(ele) {
+    const camera = new THREE.PerspectiveCamera(45, ele.clientWidth / ele.clientHeight, 1, 1000);
+    camera.position.x = 0;
+    camera.position.y = 0;
+    camera.position.z = 600;
+    camera.up.x = 0;
+    camera.up.y = 1;
+    camera.up.z = 0;
+    camera.lookAt(0, 0, 0)
+    return camera;
+  }
+
+  function initScene() {
+    return new THREE.Scene();
+  }
+
+  function initLights() {
+    const light1 = new THREE.AmbientLight(0xFFFFFF);
+    light1.position.set(100, 100, 200);
+    const light2 = new THREE.PointLight(0x00FF00);
+    light2.position.set(0, 0, 300);
+    return [light1, light2];
+  }
+
+  function initObject() {
+    const geometry = new THREE.CylinderGeometry(100, 150, 400);
+    const material = new THREE.MeshLambertMaterial({color: 0xFFFF00});
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.position = new THREE.Vector3(0, 0, 0);
+    return mesh;
+  }
+
+  function draw() {
+    const ele = document.getElementById('frame');
+    const renderer = initRender(ele);
+    const camera = initCamera(ele);
+    const scene = initScene();
+    initLights().forEach(item => scene.add(item));
+    const mesh = initObject();
+    scene.add(mesh);
+    render(renderer, camera, scene,mesh);
+  }
+
+  function render(renderer, camera, scene,mesh) {
+    mesh.position.x-=1;
+    renderer.render(scene, camera);
+    requestAnimationFrame(render.bind(null, renderer, camera, scene,mesh));
+  }
+
+  draw();
+
+</script>
+</body>
+</html>
