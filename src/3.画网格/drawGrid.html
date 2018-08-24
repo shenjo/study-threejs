@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>画网格</title>
+</head>
+<body>
+<script src="../../build/three.min.js"></script>
+<script>
+  const renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0xFFFFFF, 1.0);
+  document.body.appendChild(renderer.domElement);
+
+  const scene = new THREE.Scene();
+
+  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
+  camera.position.set(0, 0, 1900);
+  camera.lookAt(0, 0, 0);
+
+  function drawGrid(scene) {
+    const geometry = new THREE.Geometry();
+    geometry.vertices.push(new THREE.Vector3(-700, 0, 0));
+    geometry.vertices.push(new THREE.Vector3(700, 0, 0));
+    const material = new THREE.LineBasicMaterial({color: 'red'});
+
+    for (let i = 1; i < 47; i++) {
+      const horizalLine = new THREE.Line(geometry, material);
+      horizalLine.position.y = (i * 30) - 700;
+      scene.add(horizalLine);
+      const verticalLine = new THREE.Line(geometry, material);
+      verticalLine.rotation.z = 90 * Math.PI / 180;
+      verticalLine.position.x = (i * 30) - 700;
+      scene.add(verticalLine);
+    }
+  }
+
+  drawGrid(scene);
+  renderer.render(scene, camera);
+
+
+</script>
+</body>
+</html>
