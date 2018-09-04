@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>光源</title>
+    <link rel="stylesheet" href="../../build/comment.css">
+</head>
+<body>
+
+<div> 兰伯特材质，在没有光源的情况下 设置材质颜色没有效果，始终显示黑色</div>
+<div id="content"></div>
+
+<script src="../../build/three.min.js"></script>
+<script>
+  const ele = document.getElementById('content'), width = ele.clientWidth, height = ele.clientHeight;
+
+  const renderer = new THREE.WebGLRenderer();
+  renderer.setSize(width, height);
+  renderer.setClearColor(0xffffff);
+  ele.appendChild(renderer.domElement);
+
+  const scene = new THREE.Scene();
+
+  const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+  camera.position.x = 600;
+  camera.position.y = 0;
+  camera.position.z = 600;
+  camera.lookAt(0, 0, 0);
+
+  function addLight() {
+    scene.add(new THREE.AmbientLight(Math.random() * 0xcccccc));
+  }
+
+  const geometry = new THREE.CubeGeometry(200, 100, 50, 4, 4);
+  const material = new THREE.MeshLambertMaterial({color: 0xff0000}); // 兰伯特材质，设置了红色但没设置光源始终是黑色
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.position = new THREE.Vector3(0, 0, 0);
+  scene.add(mesh);
+
+  addLight();
+
+  renderer.render(scene, camera);
+
+</script>
+
+
+</body>
+</html>

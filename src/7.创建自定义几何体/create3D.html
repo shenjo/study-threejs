@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>创建自定位几何体</title>
+</head>
+<body>
+<script src="../../build/three.min.js"></script>
+<script>
+  const vertices = [
+    new THREE.Vector3(1, 3, 1),
+    new THREE.Vector3(1, 3, -1),
+    new THREE.Vector3(1, -1, 1),
+    new THREE.Vector3(1, -1, -1),
+    new THREE.Vector3(-1, 3, -1),
+    new THREE.Vector3(-1, 3, 1),
+    new THREE.Vector3(-1, -1, -1),
+    new THREE.Vector3(-1, -1, 1)
+  ]
+
+  const faces = [
+    new THREE.Face3(0, 2, 1),
+    new THREE.Face3(2, 3, 1),
+    new THREE.Face3(4, 6, 5),
+    new THREE.Face3(6, 7, 5),
+    new THREE.Face3(4, 5, 1),
+    new THREE.Face3(5, 0, 1),
+    new THREE.Face3(7, 6, 2),
+    new THREE.Face3(6, 3, 2),
+    new THREE.Face3(5, 7, 0),
+    new THREE.Face3(7, 2, 0),
+    new THREE.Face3(1, 3, 4),
+    new THREE.Face3(3, 6, 4)
+  ]
+
+  const geom = new THREE.Geometry();
+  geom.vertices = vertices;
+  geom.faces = faces;
+  // Geom.computeCentroids();
+  geom.mergeVertices();
+
+  const renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.lookAt(0, 0, 1);
+  const scene = new THREE.Scene();
+
+  scene.add(geom);
+
+  renderer.render(scene, camera);
+
+
+</script>
+</body>
+</html>

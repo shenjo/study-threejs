@@ -9,7 +9,7 @@
 <script src="../../build/three.min.js"></script>
 <script>
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
+  const camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000)
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
@@ -19,12 +19,15 @@
   scene.add(cube);
   camera.position.z = 5;
   +function animate() {
+    let helper = new THREE.CameraHelper(camera);
+    scene.add(helper)
+
     renderer.render(scene, camera);
     //这里建议多尝试一下，分别围绕x,y,z旋转看看效果来加深理解
     cube.rotation.x += 0.01;
     cube.rotation.y += 0.01;
     cube.rotation.z += 0.01;
-    requestAnimationFrame(animate);
+    // requestAnimationFrame(animate);
   }()
 </script>
 </body>
